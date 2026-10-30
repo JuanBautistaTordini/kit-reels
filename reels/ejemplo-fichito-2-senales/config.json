@@ -1,0 +1,10 @@
+{
+  "titulo": "Reel 2 · 3 señales de que alguien ficha por otro",
+  "marca": "fichito",
+  "palabraClave": "FICHITO",
+  "para": "Dueños de comercios con empleados por turnos que sospechan que alguien firma por otro",
+  "voz": "es-MX-JorgeNeural",
+  "velocidad": "+8%",
+  "pausas": { "solucion": 0.5 },
+  "fuentesExtra": ["Kalam:wght@700", "Shadows Into Light"]
+}

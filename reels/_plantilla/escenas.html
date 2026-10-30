@@ -1,0 +1,40 @@
+        <!-- Una .vista por escena. Los id tienen que coincidir con VISTAS en logica.js. Todo lo visible desde el cuadro 1 en la primera vista. -->
+        <div class="vista" id="v-gancho" style="padding:36px">
+          <div class="hoja">
+            <h3>Planilla de asistencia <span>lun 02/11</span></h3>
+            <div class="fila"><span>Ana Gómez</span><span class="h">08:58</span><span class="firma">Ana G.</span></div>
+            <div class="fila"><span>Lucas Gil</span><span class="h" id="g-hora">09:00</span><span class="firma">L. Gil</span></div>
+            <div class="fila"><span>Sofía Díaz</span><span class="h">09:04</span><span class="firma">Sofi</span></div>
+            <div class="fila" style="border:0"><span>Juan Pérez</span><span class="h">09:01</span><span class="firma">J. Pérez</span></div>
+            <div class="circulo" id="g-circulo" style="left:310px;top:222px;width:230px;height:110px"></div>
+            <div class="nota-roja" id="g-nota" style="left:300px;top:600px">¿seguro?</div>
+          </div>
+        </div>
+        <div class="vista" id="v-problema" style="padding:40px">
+          <div class="chat-cab"><span class="chat-av">E</span><div><b>Equipo del local</b><small>Lucas, Ana, Sofi</small></div></div>
+          <div class="chat" id="p-chat">
+            <div class="sep">Hoy</div>
+            <div class="bur izq"><small>Lucas · 08:52</small>Fichame que llego en 10</div>
+            <div class="bur izq"><small>Lucas · 09:40</small>Ya estoy</div>
+          </div>
+          <div class="nota-roja" id="p-nota" style="left:430px;top:560px">38 min tarde</div>
+        </div>
+        <div class="vista" id="v-solucion" style="padding:36px">
+          <div class="check"><span class="ic" data-ic="celular"></span><div><b>Con su propio celular</b><span>y su NIP de 4 números</span></div><span class="ok" data-ic="check"></span></div>
+          <div class="check"><span class="ic" data-ic="pin"></span><div><b>Adentro del local</b><span>desde la casa no ficha</span></div><span class="ok" data-ic="check"></span></div>
+          <div class="check"><span class="ic" data-ic="candado"></span><div><b>Nadie ficha por otro</b><span>cada celular es de una persona</span></div><span class="ok" data-ic="check"></span></div>
+        </div>
+        <div class="vista" id="v-cierre">
+          <div class="logo-cierre">
+            {{LOGO}}
+            <div class="comenta-t" id="c-titulo">Comentá</div>
+            <div class="ig" id="c-ig">
+              <span class="ig-av"></span>
+              <span class="ig-in"><b id="c-texto"></b><i id="c-cursor"></i><span class="ig-ph" id="c-ph">Agregá un comentario…</span></span>
+              <span class="ig-env" id="c-env">Publicar</span>
+            </div>
+            <div class="ig-ok" id="c-ok"><span class="ig-av chico"></span><b>vos</b> {{PALABRA}} <span class="corazon"><span data-ic="corazon"></span> <span id="c-cnt">1</span></span></div>
+            <div class="comenta-s" id="c-info">y te paso cómo probarlo gratis</div>
+            <div class="btn-cta" id="c-btn">Probalo gratis</div>
+          </div>
+        </div>

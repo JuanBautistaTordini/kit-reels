@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>{{TITULO}}</title>
+<!-- Plantilla del motor. NO editar a mano: `node motor/armar.mjs reels/<reel>` la completa y escribe reels/<reel>/reel.html -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700&family=Caveat:wght@600{{FUENTES_EXTRA}}&display=block" rel="stylesheet">
+<script src="voz.js"></script>
+<style>
+  :root{--marca:{{COLOR}};--marca2:{{COLOR2}}}
+  *{box-sizing:border-box;margin:0}
+  html,body{width:1080px;height:1920px;overflow:hidden;background:#06070D}
+  body{font-family:Inter,system-ui,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+  #lienzo{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(1100px 900px at 50% 52%,#121A36 0%,#0A0E1E 45%,#05060B 100%)}
+  .abs{position:absolute}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* ===== Fondo sobrio: piso de grilla, haz de luz y resplandores (sin confeti) ===== */
+  #fondo{position:absolute;inset:0;z-index:0;overflow:hidden}
+  #piso{position:absolute;left:-600px;right:-600px;top:1180px;height:1400px;transform-origin:50% 0;transform:perspective(900px) rotateX(72deg);
+    background-image:linear-gradient(#4D8DFF1f 2px,transparent 2px),linear-gradient(90deg,#4D8DFF1f 2px,transparent 2px);background-size:90px 90px;
+    -webkit-mask-image:radial-gradient(60% 60% at 50% 18%,#000 0%,transparent 75%);mask-image:radial-gradient(60% 60% at 50% 18%,#000 0%,transparent 75%)}
+  #haz{position:absolute;left:190px;top:-200px;width:700px;height:1700px;background:linear-gradient(180deg,#6E8FFF00 0%,#6E8FFF14 45%,#6E8FFF08 80%,#6E8FFF00 100%);clip-path:polygon(38% 0,62% 0,100% 100%,0 100%);filter:blur(30px)}
+  .orbe{position:absolute;border-radius:50%;filter:blur(120px)}
+  #viñeta{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 50%,transparent 55%,#000000b0 100%)}
+  /* Progreso inferior (un segmento por escena) */
+  #prog{left:120px;right:120px;top:1650px;z-index:5}
+  #prog .barras{display:grid;gap:12px}
+  #prog .b{height:6px;border-radius:3px;background:#ffffff18;overflow:hidden}
+  #prog .b i{display:block;height:100%;width:0;background:linear-gradient(90deg,#4D8DFF,#8B7CFF);border-radius:3px}
+  #prog .txt{display:flex;justify-content:space-between;margin-top:22px;font-family:"JetBrains Mono",monospace;font-size:24px;color:#7D86A8;letter-spacing:.04em}
+  #prog .txt b{color:#C8D1EE;font-weight:700}
+  /* Escenario circular */
+  #escenario{left:0;top:1260px;width:1080px;height:420px}
+
+  /* ===== Subtítulos karaoke ===== */
+  #subs{z-index:5;left:60px;right:60px;top:200px;text-align:center;font-size:60px;font-weight:600;letter-spacing:-.02em;line-height:1.25;min-height:160px}
+  .pw{display:inline-block;position:relative;padding:2px 10px;margin:0 1px;color:#5E6788;transition:none}
+  .pw.ya{color:#E9ECF7}
+  .pw.ahora{color:#fff;font-weight:800;background:#3B82F633;outline:3px solid #4D8DFF;outline-offset:0;border-radius:4px}
+  .pw.ahora::before,.pw.ahora::after,.pw.ahora i::before,.pw.ahora i::after{content:"";position:absolute;width:12px;height:12px;background:#fff;border:3px solid #4D8DFF;border-radius:2px}
+  .pw.ahora::before{left:-8px;top:-8px}.pw.ahora::after{right:-8px;bottom:-8px}
+  .pw.ahora i::before{right:-8px;top:-8px}.pw.ahora i::after{left:-8px;bottom:-8px}
+
+  /* ===== Ventana 3D ===== */
+  #ventana{left:100px;top:470px;width:880px;height:900px;transform-style:preserve-3d;will-change:transform,opacity}
+  .win{position:absolute;inset:0;border-radius:30px;background:linear-gradient(180deg,#161D35 0%,#0D1226 100%);border:2px solid #2B3557;box-shadow:0 0 0 1px #0006,0 50px 120px -30px #000,0 0 90px -20px #3B82F655;overflow:hidden}
+  .win-h{display:flex;align-items:center;gap:14px;height:78px;padding:0 30px;border-bottom:2px solid #232C4A;background:#11172C}
+  .dot{width:18px;height:18px;border-radius:50%}
+  .win-h .lbl{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:25px;letter-spacing:.14em;color:#C8D1EE;margin-left:10px}
+  .win-h .chip{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:18px;font-weight:700;letter-spacing:.06em;color:#FFB86B;border:2px solid #F97316;background:#F9731622;border-radius:10px;padding:5px 12px}
+  .win-h .cnt{font-family:"JetBrains Mono",monospace;font-size:24px;color:#4D8DFF;font-weight:700;margin-left:16px}
+  .win-b{position:absolute;left:0;right:0;top:78px;bottom:0;padding:36px}
+  .vista{position:absolute;inset:0}
+
+  /* ===== Kit de componentes (reutilizalos en las escenas) ===== */
+  /* Hoja de papel con filas y firmas manuscritas */
+  .hoja{background:#F6F1E3;border-radius:16px;height:100%;padding:34px 40px;color:#2A2440;box-shadow:inset 0 0 0 2px #E5DCC4;position:relative}
+  .hoja h3{font-size:36px;font-weight:800;border-bottom:4px solid #2A2440;padding-bottom:16px;margin-bottom:6px;display:flex;justify-content:space-between}
+  .hoja h3 span{font-family:"JetBrains Mono",monospace;font-size:24px;font-weight:500;color:#7A7090}
+  .fila{display:grid;grid-template-columns:1.25fr .6fr 1.15fr;align-items:center;height:118px;border-bottom:3px dashed #D9CFB4;font-size:34px}
+  .fila .h{font-family:"JetBrains Mono",monospace;font-weight:700}
+  .fila .h.marca{color:#E5484D;outline:5px solid #E5484D;outline-offset:6px;border-radius:10px}
+  .firma{font-family:Caveat,cursive;font-size:56px;color:#2B3FA8;white-space:nowrap;overflow:hidden}
+  .circulo{position:absolute;border:7px solid #E5484D;border-radius:50%;transform:rotate(-6deg)}
+  .nota-roja{position:absolute;font-family:Caveat,cursive;font-size:56px;color:#E5484D;transform:rotate(-8deg)}
+  /* Chat */
+  .chat{display:flex;flex-direction:column;gap:14px}
+  .chat-cab{display:flex;align-items:center;gap:20px;padding-bottom:22px;margin-bottom:18px;border-bottom:2px solid #232C4A}
+  .chat-cab b{display:block;font-size:36px}.chat-cab small{font-size:26px;color:#8A93B5}
+  .chat-av{width:76px;height:76px;border-radius:50%;background:#2B3557;display:grid;place-items:center;font-size:34px;font-weight:800}
+  .bur{max-width:92%;font-size:32px;line-height:1.2;padding:16px 24px;border-radius:28px;font-weight:600;white-space:nowrap}
+  .bur.izq{background:#232C4A;color:#E9ECF7;border-bottom-left-radius:8px;align-self:flex-start}
+  .bur.der{background:#4D8DFF;color:#fff;border-bottom-right-radius:8px;align-self:flex-end}
+  .bur small{display:block;font-size:24px;opacity:.65;font-weight:600;margin-bottom:6px}
+  .sep{align-self:center;font-family:"JetBrains Mono",monospace;font-size:22px;color:#8A93B5;background:#1B2340;border-radius:99px;padding:6px 18px;margin:4px 0}
+  .visto{align-self:flex-end;font-size:32px;font-weight:700;color:#8A93B5;display:flex;align-items:center;gap:10px;margin-top:4px}
+  .visto.grande{font-size:64px;color:#E9ECF7}
+  /* Checklist (validaciones, pasos, controles) */
+  .check{display:flex;align-items:center;gap:26px;background:#141B33;border:2px solid #263055;border-radius:24px;padding:20px 30px;margin-bottom:16px}
+  .check .ic{width:76px;height:76px;border-radius:20px;background:#1E2748;display:grid;place-items:center;font-size:40px;flex:none}
+  .check b{font-size:38px;display:block;letter-spacing:-.01em}
+  .check span{font-family:"JetBrains Mono",monospace;font-size:24px;color:#8A93B5}
+  .check .ok{margin-left:auto;width:64px;height:64px;border-radius:50%;background:#16A34A;display:grid;place-items:center;font-size:38px;font-weight:900}
+  .check.mal{border-color:#E5484D;background:#2A1220}
+  .check.mal .ok{background:#E5484D}
+  /* Radar / mapa de radio */
+  .mapa{display:flex;align-items:center;gap:34px;padding:6px 10px 0}
+  .mapa .rad{position:relative;width:170px;height:170px;border-radius:50%;border:3px dashed #4D8DFF66;flex:none}
+  .mapa .rad::before{content:"";position:absolute;inset:38px;border-radius:50%;background:#4D8DFF26;border:3px solid #4D8DFF}
+  .mapa .pin{position:absolute;width:26px;height:26px;border-radius:50%;border:5px solid #fff;margin:-13px 0 0 -13px}
+  .mapa p{font-family:"JetBrains Mono",monospace;font-size:24px;color:#8A93B5;line-height:1.6}
+  /* Panel: KPIs y tarjetas con reloj en vivo */
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+  .kpi{background:#141B33;border:2px solid #263055;border-radius:22px;padding:20px 24px}
+  .kpi b{font-size:54px;display:block;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .kpi span{font-size:22px;color:#8A93B5;font-family:"JetBrains Mono",monospace}
+  .tj{display:flex;align-items:center;gap:22px;background:#F4F3FA;color:#1E1B3A;border-radius:24px;padding:22px 26px;margin-bottom:16px;border-left:14px solid #16A34A}
+  .tj.p{border-left-color:#F59E0B}
+  .av{width:76px;height:76px;border-radius:50%;background:#EEEAFE;color:#3F27C9;display:grid;place-items:center;font-weight:800;font-size:30px;flex:none}
+  .tj .n{flex:1}.tj b{font-size:36px;display:block}.tj small{font-size:24px;color:#6B6987}
+  .tj .r{font-size:46px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .tj.p .r{color:#D98500}
+  .excel{display:flex;align-items:center;gap:20px;background:#0F2A1C;border:3px solid #16A34A;color:#7CF0A6;border-radius:24px;padding:22px 26px;font-size:34px;font-weight:800}
+  /* Gancho tipo "3 señales" con filas ocultas */
+  .g-top{display:flex;align-items:center;gap:30px;margin-bottom:40px}
+  .g-num{font-family:Inter;font-weight:900;font-size:230px;line-height:.8;letter-spacing:-.06em;background:linear-gradient(160deg,#B9A9FF,var(--marca));-webkit-background-clip:text;color:transparent}
+  .g-tit{font-size:52px;font-weight:800;letter-spacing:-.025em;line-height:1.08}
+  .senal{display:flex;align-items:center;gap:26px;background:#141B33;border:2px solid #263055;border-radius:26px;padding:30px;margin-bottom:20px;position:relative}
+  .senal .sn{width:72px;height:72px;border-radius:20px;background:#1E2748;display:grid;place-items:center;font-size:40px;font-weight:900;flex:none}
+  .senal .bloq{height:34px;border-radius:12px;background:linear-gradient(90deg,#2B3557 0%,#3A4778 50%,#2B3557 100%);background-size:200% 100%;filter:blur(1.5px)}
+  .senal.on{border-color:#F97316;background:#2A1A12}
+  .senal.on .sn{background:#F97316}
+  .chip-com{position:absolute;right:26px;top:-22px;background:#F97316;color:#fff;font-weight:800;font-size:30px;padding:8px 20px;border-radius:99px;box-shadow:0 10px 30px -8px #F97316aa}
+
+  /* ===== Teléfono 3D ===== */
+  #telefono{left:250px;top:400px;width:580px;height:1140px;transform-style:preserve-3d;will-change:transform,opacity}
+  .cel{position:absolute;inset:0;background:linear-gradient(140deg,#3A4060,#171B2E 40%,#0B0E1A);border-radius:96px;padding:22px;box-shadow:0 60px 140px -30px #000,0 0 100px -20px #4D8DFF66}
+  .cel::after{content:"";position:absolute;top:44px;left:50%;width:26px;height:26px;margin-left:-13px;border-radius:50%;background:#000}
+  .pant{position:relative;width:100%;height:100%;border-radius:76px;background:#F4F3FA;overflow:hidden;color:#1E1B3A}
+  .capa{position:absolute;inset:0;padding:100px 38px 40px}
+  .chipc{display:inline-block;background:#fff;border:2px solid #E4E2F0;border-radius:99px;padding:7px 16px;font-size:24px;font-weight:700;margin-right:6px}
+  .chipc.ok{background:#E8F7EE;border-color:#BFE8CF;color:#11743A}
+  .estado{border-radius:38px;padding:28px 32px;color:#fff;background:#4B4966;margin-top:26px}
+  .estado small{font-size:26px;font-weight:700;opacity:.9}
+  .estado b{display:block;font-size:78px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .boton{margin-top:28px;background:#16A34A;color:#fff;border-radius:32px;text-align:center;font-weight:800;font-size:40px;padding:44px 0;box-shadow:0 10px 0 #0000002e}
+  .dedo{position:absolute;width:140px;height:140px;border-radius:50%;background:#4D8DFF44;border:6px solid #4D8DFF;display:none}
+  .pad{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:48px 48px 0 0;padding:38px 38px 50px;box-shadow:0 -20px 60px #1e1b3a33}
+  .pad h4{text-align:center;font-size:36px;margin-bottom:22px}
+  .dots{display:flex;justify-content:center;gap:28px;margin-bottom:30px}
+  .dots i{width:32px;height:32px;border-radius:50%;border:5px solid #C9C4E8}
+  .dots i.on{background:var(--marca);border-color:var(--marca)}
+  .teclas{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .teclas span{height:96px;border-radius:26px;background:#F1F0F8;display:grid;place-items:center;font-size:44px;font-weight:700}
+  .camara{position:absolute;inset:0;background:#1d2034;display:grid;place-items:center}
+  .marco{position:relative;width:360px;height:360px}
+  .qr{display:grid;grid-template-columns:repeat(21,1fr);width:360px;height:360px;background:#fff;padding:16px;border-radius:12px}
+  .qr i{background:#1E1B3A}
+  .esq{position:absolute;width:80px;height:80px;border:10px solid #fff}
+  .scan{position:absolute;left:-14px;right:-14px;height:8px;background:#3DDC84;box-shadow:0 0 30px 10px #3ddc8466;border-radius:4px}
+  .confirma{position:absolute;inset:0;background:#12924A;display:grid;place-items:center}
+  .sello{border:12px solid #fff;border-radius:48px;padding:30px 50px;text-align:center;color:#fff}
+  .sello .c{font-size:90px;line-height:1;font-weight:900}
+  .sello .t{font-size:40px;font-weight:800}
+  .sello .h{font-size:150px;font-weight:900;letter-spacing:-.04em;line-height:.95;font-variant-numeric:tabular-nums}
+
+  /* ===== Cierre: "Comentá PALABRA" con caja de comentario de Instagram ===== */
+  .logo-cierre{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:26px;text-align:center;padding:0 40px}
+  .logo-cierre > svg,.logo-cierre > img{width:150px;height:150px;object-fit:contain;filter:drop-shadow(0 24px 34px color-mix(in srgb,var(--marca) 55%,transparent))}
+  .comenta-t{font-size:84px;font-weight:900;letter-spacing:-.04em;line-height:1}
+  .ig{display:flex;align-items:center;gap:18px;width:100%;background:#0B0F1E;border:3px solid #2E3961;border-radius:60px;padding:16px 18px 16px 16px;box-shadow:0 0 60px -10px color-mix(in srgb,var(--marca) 55%,transparent)}
+  .ig-av{width:64px;height:64px;border-radius:50%;flex:none;border:5px solid transparent;background:radial-gradient(circle at 50% 38%,#C9D3F0 0 22%,#3A4570 23%) padding-box,conic-gradient(from 210deg,#F58529,#DD2A7B,#8134AF,#515BD4,#F58529) border-box}
+  .ig-av.chico{width:44px;height:44px;border-width:4px}
+  .ig-in{flex:1;text-align:left;font-size:54px;font-weight:900;letter-spacing:.04em;position:relative;white-space:nowrap}
+  .ig-in b{color:#fff}
+  .ig-in i{display:inline-block;width:5px;height:56px;background:#4D8DFF;vertical-align:-8px;margin-left:4px}
+  .ig-ph{position:absolute;left:0;top:50%;transform:translateY(-50%);font-size:34px;font-weight:600;letter-spacing:0;color:#5E6788}
+  .ig-env{font-size:34px;font-weight:800;color:#4D8DFF;padding-right:14px}
+  .ig-ok{display:flex;align-items:center;gap:16px;align-self:flex-start;background:#121830;border:2px solid #263055;border-radius:30px;padding:14px 26px 14px 14px;font-size:36px;font-weight:600;color:#E9ECF7}
+  .ig-ok b{font-weight:800}
+  .corazon{color:#FF3B6B;font-weight:800;margin-left:12px;font-variant-numeric:tabular-nums}
+  .comenta-s{font-size:46px;font-weight:700;color:#C8D1EE;letter-spacing:-.01em}
+  .btn-cta{background:var(--marca);border-radius:30px;padding:30px 60px;font-size:50px;font-weight:800;box-shadow:0 10px 0 var(--marca2),0 0 60px color-mix(in srgb,var(--marca) 55%,transparent)}
+
+  /* ===== Estilos propios del reel ===== */
+{{ESTILOS}}
+</style>
+</head>
+<body>
+<div id="lienzo">
+  <div id="fondo">
+    <div class="orbe" id="orbe1" style="width:700px;height:700px;background:#3B5BFF;opacity:.22"></div>
+    <div class="orbe" id="orbe2" style="width:600px;height:600px;background:#7A5CFF;opacity:.16"></div>
+    <div id="haz"></div>
+    <div id="piso"></div>
+    <div id="viñeta"></div>
+  </div>
+  <svg id="escenario" class="abs" viewBox="0 0 1080 420"></svg>
+  <div id="subs" class="abs"></div>
+
+  <div id="ventana" class="abs">
+    <div class="win">
+      <div class="win-h"><span class="dot" style="background:#FF5F57"></span><span class="dot" style="background:#FEBC2E"></span><span class="dot" style="background:#28C840"></span><span class="lbl" id="w-lbl"></span><span class="chip" id="w-chip"></span><span class="cnt" id="w-cnt"></span></div>
+      <div class="win-b">
+{{ESCENAS}}
+      </div>
+    </div>
+  </div>
+
+  <div id="telefono" class="abs">
+    <div class="cel"><div class="pant">
+{{TELEFONO}}
+    </div></div>
+  </div>
+
+  <div id="prog" class="abs"><div class="barras" id="barras"></div><div class="txt"><span id="prog-l"></span><b id="prog-n"></b></div></div>
+</div>
+
+<script>
+const CONFIG = {{CONFIG}};
+// ---------- utilidades (todo depende de t: render determinístico cuadro a cuadro) ----------
+const $ = (id) => document.getElementById(id);
+const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const pr = (t, a, b) => cl((t - a) / (b - a));
+const eOut = (x) => 1 - Math.pow(1 - x, 3);
+const eBack = (x) => { const c1 = 1.7, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const set = (el, s) => Object.assign((typeof el === 'string' ? $(el) : el).style, s);
+const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const tipear = (el, texto, p) => { (typeof el === 'string' ? $(el) : el).textContent = texto.slice(0, Math.round(texto.length * cl(p))); };
+const hms = (s) => [Math.floor(s / 3600), Math.floor(s / 60) % 60, Math.floor(s % 60)].map((v) => String(v).padStart(2, '0')).join(':');
+
+// ---------- voz: pausas insertadas y tiempos por palabra ----------
+// CONFIG.pausas = { escena: segundos } agrega silencio antes de esa escena. render.mjs corta el audio en el mismo punto.
+const PAUSAS = CONFIG.pausas || {};
+const CORTES = [];
+const V = (() => {
+  let off = 0;
+  return window.VOZ.map((e, i, arr) => {
+    if (PAUSAS[e.id] && i > 0) { CORTES.push({ t: (arr[i - 1].t1 + e.t0) / 2, d: PAUSAS[e.id] }); off += PAUSAS[e.id]; }
+    return off ? { ...e, t0: e.t0 + off, t1: e.t1 + off, palabras: e.palabras.map((w) => ({ ...w, t: w.t + off })) } : e;
+  });
+})();
+window.VOZ_AJ = V;
+window.CORTES = CORTES;
+const E = Object.fromEntries(V.map((e) => [e.id, e]));
+/** Segundo en que la voz dice `palabra` dentro de la escena `id` (n = ocurrencia). Todas las animaciones se disparan con esto. */
+function at(id, palabra, n = 0) {
+  if (!E[id]) throw new Error(`No existe la escena "${id}" en el guion`);
+  const ws = E[id].palabras.filter((w) => norm(w.w) === norm(palabra));
+  if (!ws[n]) console.warn(`La palabra "${palabra}" no está en la escena "${id}"`);
+  return ws[n] ? ws[n].t : E[id].t0;
+}
+const FIN = V.at(-1).t1 + (CONFIG.cola ?? 1.7);
+window.DURACION = FIN;
+
+// ---------- escenario circular ----------
+(() => {
+  const cx = 540, cy = 210, rx = 450, ry = 92;
+  let s = `<defs><radialGradient id="luz" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#3B82F6" stop-opacity=".45"/><stop offset="1" stop-color="#3B82F6" stop-opacity="0"/></radialGradient>
+    <filter id="brillo"><feGaussianBlur stdDeviation="6"/></filter></defs>
+    <ellipse cx="${cx}" cy="${cy}" rx="${rx + 60}" ry="${ry + 40}" fill="url(#luz)"/>
+    <ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="none" stroke="#4D8DFF" stroke-width="5" filter="url(#brillo)" opacity=".8"/>
+    <ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="none" stroke="#9CC0FF" stroke-width="2.5"/>
+    <ellipse cx="${cx}" cy="${cy}" rx="${rx - 70}" ry="${ry - 16}" fill="#0B1224" stroke="#24345E" stroke-width="2"/><g id="ticks">`;
+  for (let i = 0; i < 72; i++) s += '<line stroke="#7FA6FF" stroke-width="3" stroke-linecap="round"/>';
+  $('escenario').innerHTML = s + '</g>';
+})();
+function fondo(t) {
+  set('orbe1', { transform: `translate(${-120 + Math.sin(t * .23) * 90}px, ${380 + Math.cos(t * .19) * 70}px) scale(${1 + Math.sin(t * .4) * .06})` });
+  set('orbe2', { transform: `translate(${560 + Math.cos(t * .21) * 80}px, ${1050 + Math.sin(t * .17) * 90}px)` });
+  set('piso', { backgroundPosition: `0 ${(t * 22) % 90}px` });
+  set('haz', { opacity: .85 + Math.sin(t * .8) * .15 });
+  const lines = $('ticks').children;
+  for (let i = 0; i < lines.length; i++) {
+    const a = (i / lines.length) * Math.PI * 2 + t * .25;
+    lines[i].setAttribute('x1', 540 + Math.cos(a) * 412); lines[i].setAttribute('y1', 210 + Math.sin(a) * 82);
+    lines[i].setAttribute('x2', 540 + Math.cos(a) * 432); lines[i].setAttribute('y2', 210 + Math.sin(a) * 86);
+    lines[i].setAttribute('opacity', (Math.sin(a) * .5 + .5) * .9 + .1);
+  }
+}
+
+// ---------- subtítulos karaoke (bloques de hasta 4 palabras, sin palabras sueltas) ----------
+const TROZOS = V.map((e) => {
+  const tokens = e.texto.split(/\s+/);
+  const trozos = [];
+  let actual = [];
+  e.palabras.forEach((w, i) => {
+    actual.push({ txt: tokens[i] || w.w, t: w.t, d: w.d });
+    if (actual.length >= 4 || /[.,:?!]$/.test(tokens[i] || '')) { trozos.push(actual); actual = []; }
+  });
+  if (actual.length) trozos.push(actual);
+  for (let i = trozos.length - 1; i > 0; i--) if (trozos[i].length === 1 && trozos[i - 1].length < 5) { trozos[i - 1].push(...trozos[i]); trozos.splice(i, 1); }
+  return trozos;
+}).flat();
+let trozoPintado = -1;
+function subs(t) {
+  let idx = TROZOS.findIndex((tr, i) => t >= tr[0].t - .05 && (i === TROZOS.length - 1 || t < TROZOS[i + 1][0].t - .05));
+  const ult = TROZOS.at(-1).at(-1);
+  if (t < TROZOS[0][0].t) idx = 0; // el gancho ya se lee en el cuadro 1 (es la portada del reel)
+  if (t > ult.t + ult.d + .8) idx = -1;
+  if (idx !== trozoPintado) {
+    $('subs').innerHTML = idx < 0 ? '' : TROZOS[idx].map((w, i) => `<span class="pw" data-i="${i}"><i></i>${w.txt}</span>`).join(' ');
+    trozoPintado = idx;
+  }
+  if (idx < 0) return;
+  [...$('subs').children].forEach((el, i) => {
+    const w = TROZOS[idx][i];
+    const sig = TROZOS[idx][i + 1];
+    const fin = sig ? sig.t : w.t + w.d + .25;
+    const primera = idx === 0 && i === 0 && t < w.t;
+    el.className = 'pw' + ((t >= w.t && t < fin) || primera ? ' ahora' : t >= fin ? ' ya' : '');
+  });
+  const e = idx === 0 ? 1 : pr(t, TROZOS[idx][0].t - .05, TROZOS[idx][0].t + .2);
+  set('subs', { opacity: e, transform: `translateY(${(1 - eOut(e)) * 20}px)` });
+}
+
+// ---------- QR decorativo (si el teléfono tiene #qr) ----------
+(() => {
+  if (!$('qr')) return;
+  let s = 11; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  const n = 21;
+  const fill = (r, c) => { for (const [a, b] of [[0, 0], [0, 14], [14, 0]]) if (r >= a && r < a + 7 && c >= b && c < b + 7) { const y = r - a, x = c - b; return y === 0 || y === 6 || x === 0 || x === 6 || (y >= 2 && y <= 4 && x >= 2 && x <= 4); } return rnd() > .5; };
+  $('qr').innerHTML = Array.from({ length: n * n }, (_, k) => (fill(Math.floor(k / n), k % n) ? '<i></i>' : '<b></b>')).join('');
+})();
+
+// ---------- helpers de animación listos para usar en logica.js ----------
+/** Entra con rebote: desde abajo ("y"), desde el costado ("x") o creciendo ("s"). */
+function entrar(el, t, t0, dur = .35, modo = 'y', dist = 60) {
+  const x = pr(t, t0, t0 + dur);
+  const k = 1 - eBack(x);
+  const tr = modo === 'x' ? `translateX(${k * dist}px)` : modo === 's' ? `scale(${.6 + .4 * eBack(x)})` : `translateY(${k * dist}px) scale(${.88 + .12 * eBack(x)})`;
+  set(el, { opacity: x, transform: tr });
+  return x;
+}
+/** Círculo rojo que se dibuja (elemento .circulo). */
+function dibujarCirculo(el, t, t0, dur = .3) { const c = pr(t, t0, t0 + dur); set(el, { opacity: c > 0 ? 1 : 0, clipPath: `inset(0 ${100 - c * 100}% 0 0)` }); }
+/** Golpe: pequeño temblor de escala después de t0 (para acompañar un "golpe" de sonido). */
+function golpe(el, t, t0, fuerza = .03) { const g = t > t0 ? Math.exp(-(t - t0) * 9) * Math.sin((t - t0) * 30) : 0; set(el, { transform: `scale(${1 + g * fuerza})` }); }
+/** Temblor horizontal (error / rechazo). */
+const temblor = (t, t0, dur = .45, amp = 14) => (t > t0 && t < t0 + dur ? Math.sin((t - t0) * 70) * amp * (1 - pr(t, t0, t0 + dur)) : 0);
+/** Cierre estándar "Comentá PALABRA": palabras = { comenta, palabra, info, boton } (palabras del guion de la escena de cierre). */
+function cierreComentario(t, escena, palabras, texto, corazones = 248) {
+  const tC = at(escena, palabras.comenta), tF = at(escena, palabras.palabra), tInfo = at(escena, palabras.info), tYa = at(escena, palabras.boton);
+  entrar('c-titulo', t, tC - .15, .4, 's');
+  entrar('c-ig', t, tC, .35, 'y', 40);
+  const tipeo = pr(t, tF - .05, tF + .5);
+  const publicado = t >= tF + .8;
+  $('c-texto').textContent = publicado ? '' : texto.slice(0, Math.round(texto.length * tipeo));
+  set('c-ph', { display: tipeo > 0 && !publicado ? 'none' : 'block' });
+  set('c-cursor', { opacity: tipeo > 0 && !publicado && Math.floor(t * 3) % 2 === 0 ? 1 : 0 });
+  set('c-env', { opacity: tipeo >= 1 && !publicado ? 1 : .35 });
+  entrar('c-ok', t, tF + .8, .35, 'y', 30);
+  $('c-cnt').textContent = String(Math.max(1, Math.round(1 + (corazones - 1) * eOut(pr(t, tF + 1, tF + 3)))));
+  set('c-info', { opacity: pr(t, tInfo - .1, tInfo + .3) });
+  const b = pr(t, tYa - .15, tYa + .25);
+  set('c-btn', { opacity: b, transform: `scale(${(.5 + .5 * eBack(b)) * (b >= 1 ? 1 + Math.sin(t * 6) * .025 : 1)})` });
+}
+
+// ======================= LÓGICA DEL REEL =======================
+{{LOGICA}}
+// ===============================================================
+
+// ---------- render: transiciones 3D entre escenas + barra de progreso ----------
+$('barras').style.gridTemplateColumns = `repeat(${VISTAS.length},1fr)`;
+$('barras').innerHTML = VISTAS.map(() => '<span class="b"><i></i></span>').join('');
+function render(t) {
+  fondo(t);
+  subs(t);
+  let vi = 0;
+  VISTAS.forEach((v, i) => { if (t >= v.desde) vi = i; });
+  const v = VISTAS[vi];
+  const sig = VISTAS[vi + 1];
+  // La primera escena ya está en pantalla en el cuadro 1 (nunca arrancar desde negro): solo un leve acercamiento.
+  const entra = vi === 0 ? .82 + .18 * eOut(pr(t, 0, .6)) : eBack(pr(t, v.desde, v.desde + .5));
+  const sale = sig ? eOut(pr(t, sig.desde - .3, sig.desde)) : 0;
+  const flota = Math.sin(t * 1.4) * 10;
+  const giro = -14 + Math.sin(t * .45) * 5;
+  const tf = (extra) => `perspective(2400px) translateY(${flota + (1 - entra) * 160}px) rotateX(${7 + (1 - entra) * 20}deg) rotateY(${giro + (1 - entra) * -60 + sale * 70}deg) scale(${.85 + .15 * entra - sale * .1}) ${extra || ''}`;
+  const op = cl(entra) * (1 - sale);
+  const esTel = v.id === 'telefono';
+  set('ventana', { display: esTel ? 'none' : 'block', transform: tf(), opacity: op });
+  set('telefono', { display: esTel ? 'block' : 'none', transform: tf('rotateY(6deg)'), opacity: op });
+  VISTAS.filter((x) => x.id !== 'telefono').forEach((x) => set(x.id, { display: x.id === v.id ? 'block' : 'none' }));
+  const totalV = String(VISTAS.length).padStart(2, '0');
+  $('w-lbl').textContent = v.lbl || ''; $('w-chip').textContent = v.chip || ''; set('w-chip', { display: v.chip ? 'inline-block' : 'none' });
+  $('w-cnt').textContent = `${v.n} / ${totalV}`;
+  $('prog-l').textContent = v.prog || ''; $('prog-n').textContent = `${v.n} / ${totalV}`;
+  [...document.querySelectorAll('#prog .b i')].forEach((b, i) => { b.style.width = `${pr(t, VISTAS[i].desde, VISTAS[i + 1]?.desde ?? FIN) * 100}%`; });
+  set('prog', { opacity: 1 - pr(t, FIN - .6, FIN) });
+  escena(t, v, esTel);
+}
+window.render = render;
+window.SFX = sonidos();
+
+// ---------- íconos SVG (sin emojis): <span data-ic="check"></span> ----------
+(() => {
+  const P = {
+    check: '<path d="M20 6 9 17l-5-5"/>', cruz: '<path d="M18 6 6 18M6 6l12 12"/>', checks: '<path d="M2 13l4 4L16 7M10 15l2 2L22 7"/>',
+    qr: '<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/>',
+    pin: '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+    celular: '<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/>', casa: '<path d="M3 11 12 4l9 7M5 10v10h14V10"/>',
+    tabla: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
+    corazon: '<path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z" fill="currentColor"/>',
+    reloj: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/>', alerta: '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
+    calendario: '<rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/>', usuario: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',
+    dinero: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/>', grafico: '<path d="M3 3v18h18M7 15l4-4 3 3 5-6"/>',
+    candado: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>', mensaje: '<path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-5A8.5 8.5 0 1 1 21 11.5z"/>',
+    estrella: '<path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/>', carrito: '<circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l3 12h11l2-8H6"/>',
+  };
+  document.querySelectorAll('[data-ic]').forEach((el) => {
+    el.innerHTML = `<svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em">${P[el.dataset.ic] || ''}</svg>`;
+  });
+})();
+
+// Vista previa en el navegador (sin ?render): clic para reproducir con la voz.
+if (!location.search.includes('render')) {
+  const audio = new Audio('voz.mp3');
+  let inicio = performance.now();
+  document.addEventListener('click', () => { inicio = performance.now(); audio.currentTime = 0; audio.play(); });
+  const loop = () => { render(((performance.now() - inicio) / 1000) % FIN); requestAnimationFrame(loop); };
+  document.fonts.ready.then(loop);
+}
+</script>
+</body>
+</html>

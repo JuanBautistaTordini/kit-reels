@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Fichito · piezas de Instagram</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700&display=block" rel="stylesheet">
+<style>
+  :root{--tinta:#5B3DF5;--tinta-2:#3F27C9;--tinta-3:#8B7CFF;--ink:#1E1B3A;--noche:#0A0E1E;--papel:#F4F3FA;--mut:#8A93B5;--verde:#16A34A;--ambar:#F59E0B;--rojo:#E5484D}
+  *{box-sizing:border-box;margin:0}
+  html,body{background:#000}
+  body{font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  #s{position:relative;width:1080px;height:1350px;overflow:hidden;color:#fff;background:radial-gradient(900px 700px at 85% 0%,#2A2470 0%,transparent 60%),radial-gradient(800px 600px at 0% 100%,#1A1F4A 0%,transparent 60%),var(--noche)}
+  #s.story{height:1920px}
+  #s.claro{color:var(--ink);background:radial-gradient(900px 700px at 90% 0%,#E2DCFF 0%,transparent 60%),var(--papel)}
+  #s.violeta{background:radial-gradient(900px 800px at 80% 10%,#7A5CFF 0%,transparent 65%),var(--tinta)}
+  .cab{position:absolute;left:70px;right:70px;top:60px;display:flex;align-items:center;justify-content:space-between}
+  .marca{display:flex;align-items:center;gap:14px;font-family:"Bricolage Grotesque";font-weight:800;font-size:38px;letter-spacing:-.02em}
+  .marca svg{width:58px;height:58px}
+  .cnt{font-family:"JetBrains Mono";font-size:26px;opacity:.6;font-weight:700}
+  .cuerpo{position:absolute;left:70px;right:70px;top:190px;bottom:150px;display:flex;flex-direction:column}
+  .story .cuerpo{top:230px;bottom:260px}
+  .tag{align-self:flex-start;font-weight:700;font-size:28px;padding:10px 24px;border-radius:99px;border:3px solid currentColor;opacity:.9;margin-bottom:34px}
+  h1{font-family:"Bricolage Grotesque";font-weight:800;letter-spacing:-.045em;line-height:.95;font-size:112px}
+  h2{font-family:"Bricolage Grotesque";font-weight:800;letter-spacing:-.035em;line-height:1;font-size:80px}
+  .sub,.txt{font-size:40px;line-height:1.3;font-weight:500;opacity:.82;margin-top:30px;max-width:30ch}
+  .num{font-family:"JetBrains Mono";font-weight:700;font-size:34px;color:var(--tinta-3);margin-bottom:20px}
+  .claro .num{color:var(--tinta)}
+  .pie{position:absolute;left:70px;right:70px;bottom:62px;display:flex;justify-content:space-between;align-items:center;font-size:28px;font-weight:600;opacity:.75}
+  .flecha{display:flex;align-items:center;gap:12px}
+  .flecha svg{width:40px;height:40px}
+  .robot-gr{position:absolute;right:30px;bottom:110px;width:430px;height:430px;filter:drop-shadow(0 40px 50px #0006)}
+  .story .robot-gr{bottom:220px;width:460px;height:460px;right:50%;transform:translateX(50%)}
+  .lista{list-style:none;padding:0;margin-top:44px;display:grid;gap:26px}
+  .lista li{display:flex;gap:24px;align-items:flex-start;font-size:40px;font-weight:600;line-height:1.2}
+  .lista .ck{flex:none;width:52px;height:52px;border-radius:16px;background:var(--verde);color:#fff;display:grid;place-items:center}
+  .lista .ck svg{width:32px;height:32px}
+  .pasos{list-style:none;padding:0;margin-top:40px;display:grid;gap:22px;max-width:520px}
+  .pasos li{display:flex;gap:22px;align-items:center;font-size:38px;font-weight:600;line-height:1.15}
+  .pasos b{flex:none;width:64px;height:64px;border-radius:20px;background:var(--tinta);color:#fff;display:grid;place-items:center;font-size:34px}
+  .tel{position:absolute;right:56px;bottom:120px;width:400px;height:820px;border-radius:64px;background:linear-gradient(140deg,#3A4060,#11152A);padding:16px;box-shadow:0 50px 90px -30px #000c,0 0 0 2px #ffffff14;transform:rotate(4deg)}
+  .tel img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50px;display:block}
+  .story .tel{position:relative;right:auto;bottom:auto;margin:60px auto 0;width:560px;height:1150px;transform:none;border-radius:80px;padding:20px}
+  .story .tel img{border-radius:62px}
+  .ctrl{margin-top:44px;display:grid;gap:22px}
+  .ctrl div{display:flex;gap:28px;align-items:flex-start;background:#ffffff0d;border:2px solid #ffffff1c;border-radius:30px;padding:30px 32px}
+  .ctrl .ic{flex:none;width:84px;height:84px;border-radius:24px;background:var(--tinta);display:grid;place-items:center}
+  .ctrl .ic svg{width:46px;height:46px}
+  .ctrl b{display:block;font-size:40px;letter-spacing:-.01em;margin-bottom:6px}
+  .ctrl span{font-size:30px;opacity:.75;line-height:1.3}
+  .rub{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .rub div{background:#ffffff0d;border:2px solid #ffffff1c;border-radius:26px;padding:24px 26px}
+  .rub b{display:block;font-size:34px;margin-bottom:8px;color:#fff}
+  .rub span{font-size:26px;opacity:.75;line-height:1.3}
+  .grande{font-family:"Bricolage Grotesque";font-weight:800;font-size:230px;letter-spacing:-.06em;line-height:.9;color:var(--tinta-3)}
+  .btn{align-self:flex-start;margin-top:50px;background:#fff;color:var(--tinta-2);font-weight:800;font-size:46px;padding:30px 50px;border-radius:30px;box-shadow:0 12px 0 #2a1a9e}
+  .violeta .txt{opacity:.92}
+  /* Panel (maqueta) */
+  .pnl{margin-top:44px;background:var(--papel);color:var(--ink);border-radius:40px;padding:30px;box-shadow:0 40px 80px -30px #000a}
+  .pnl-top{display:flex;justify-content:space-between;align-items:center;font-size:36px;font-weight:800;margin-bottom:22px}
+  .vivo{font-size:24px;font-weight:700;color:#11743A;display:flex;align-items:center;gap:10px}
+  .vivo i{width:14px;height:14px;border-radius:50%;background:#3DDC84}
+  .tj{display:flex;align-items:center;gap:22px;background:#fff;border-radius:26px;padding:22px 26px;margin-top:14px;border-left:12px solid var(--verde)}
+  .tj.p{border-left-color:var(--ambar)}.tj.r{border-left-color:var(--rojo);background:#FDECEC}
+  .av{width:72px;height:72px;border-radius:50%;background:#EEEAFE;color:var(--tinta-2);display:grid;place-items:center;font-weight:800;font-size:28px;flex:none}
+  .tj .n{flex:1}.tj .n b{display:block;font-size:34px}.tj .n small{font-size:24px;color:#6B6987}
+  .tj .h{font-size:44px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .tj.p .h{color:#D98500}.tj.r .h{color:var(--rojo);font-size:30px}
+  .tabla{width:100%;border-collapse:collapse;font-size:30px}
+  .tabla td{padding:18px 8px;border-bottom:2px solid #E4E2F0}
+  .tabla td:last-child{text-align:right;font-weight:800;font-variant-numeric:tabular-nums}
+  .tabla tr:last-child td{border:0}
+  .xls{margin-top:20px;display:flex;align-items:center;gap:14px;background:#E6F6EC;color:#0F5A2E;border-radius:20px;padding:18px 22px;font-weight:800;font-size:28px}
+  /* Historias */
+  .espacio{margin-top:60px;height:420px;border-radius:40px}
+  .story h1{font-size:136px}
+  .story .txt{font-size:54px;max-width:none;margin-top:40px}
+  .story .pnl{transform:scale(1.12);transform-origin:top center;margin-top:80px}
+  .story .cab .marca{font-size:44px}
+  .story .cab .marca svg{width:66px;height:66px}
+  .story .pie{font-size:34px}
+  .dolor-txt{font-size:46px!important;max-width:24ch!important}
+</style>
+</head>
+<body>
+<div id="s"></div>
+<script>
+const ICO = {
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  qr: '<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/><path d="M13 7h4v2M7 15v2h2"/>',
+  pin: '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  celular: '<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/>',
+  flecha: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  tabla: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
+};
+const ic = (n, sw = 2.4) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${ICO[n]}</svg>`;
+
+/** El robot de Fichito con expresiones. */
+function robot(expr = 'feliz') {
+  const ojos = {
+    feliz: '<ellipse cx="47" cy="57" rx="6" ry="8" fill="#1E1B3A"/><ellipse cx="73" cy="57" rx="6" ry="8" fill="#1E1B3A"/>',
+    saludo: '<ellipse cx="47" cy="57" rx="6" ry="8" fill="#1E1B3A"/><path d="M66 58q7-7 14 0" stroke="#1E1B3A" stroke-width="5" fill="none" stroke-linecap="round"/>',
+    preocupado: '<ellipse cx="47" cy="59" rx="5.5" ry="7" fill="#1E1B3A"/><ellipse cx="73" cy="59" rx="5.5" ry="7" fill="#1E1B3A"/><path d="M38 45l14 5M82 45l-14 5" stroke="#1E1B3A" stroke-width="4.5" stroke-linecap="round"/>',
+    sorprendido: '<circle cx="47" cy="55" r="8" fill="#1E1B3A"/><circle cx="73" cy="55" r="8" fill="#1E1B3A"/><circle cx="49" cy="53" r="2.5" fill="#fff"/><circle cx="75" cy="53" r="2.5" fill="#fff"/>',
+    pensando: '<ellipse cx="49" cy="55" rx="5.5" ry="7.5" fill="#1E1B3A"/><ellipse cx="75" cy="55" rx="5.5" ry="7.5" fill="#1E1B3A"/><path d="M66 43l14-3" stroke="#1E1B3A" stroke-width="4.5" stroke-linecap="round"/>',
+  }[expr];
+  const boca = {
+    feliz: '<path d="M46 76q14 11 28 0" stroke="#1E1B3A" stroke-width="5" fill="none" stroke-linecap="round"/>',
+    saludo: '<path d="M44 74q16 14 32 0z" fill="#1E1B3A"/>',
+    preocupado: '<path d="M47 80q6-5 13 0t13 0" stroke="#1E1B3A" stroke-width="5" fill="none" stroke-linecap="round"/>',
+    sorprendido: '<ellipse cx="60" cy="80" rx="7" ry="9" fill="#1E1B3A"/>',
+    pensando: '<path d="M50 80h18" stroke="#1E1B3A" stroke-width="5" stroke-linecap="round"/>',
+  }[expr];
+  const extra = expr === 'saludo' ? '<path d="M110 66q22-10 18-40" stroke="#7A5CFF" stroke-width="13" fill="none" stroke-linecap="round"/><circle cx="128" cy="24" r="9" fill="#7A5CFF"/>'
+    : expr === 'preocupado' ? '<path d="M96 30q6 9 0 14q-6-5 0-14z" fill="#7CC8FF"/>'
+      : expr === 'pensando' ? '<circle cx="118" cy="18" r="6" fill="#C9C4E8"/><circle cx="132" cy="2" r="9" fill="#C9C4E8"/>' : '';
+  return `<svg viewBox="-6 -14 150 132" overflow="visible"><rect x="50" y="4" width="20" height="14" rx="5" fill="#3F27C9"/><rect x="10" y="14" width="100" height="96" rx="32" fill="#7A5CFF"/><rect x="10" y="14" width="100" height="96" rx="32" fill="url(#brillo)"/><circle cx="60" cy="62" r="35" fill="#fff"/>${ojos}${boca}${extra}
+    <defs><linearGradient id="brillo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs></svg>`;
+}
+window.robotSvg = robot;
+const LOGO = '<svg viewBox="0 0 64 64"><rect x="26" y="2" width="12" height="8" rx="3" fill="#3F27C9"/><rect x="4" y="8" width="56" height="52" rx="18" fill="#7A5CFF"/><circle cx="32" cy="34" r="19" fill="#fff"/><ellipse cx="25" cy="31" rx="3.2" ry="4.2" fill="#1E1B3A"/><ellipse cx="39" cy="31" rx="3.2" ry="4.2" fill="#1E1B3A"/><path d="M25 41q7 6 14 0" stroke="#1E1B3A" stroke-width="3" fill="none" stroke-linecap="round"/></svg>';
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function panel(v) {
+  if (v === 'kiosco') return `<div class="pnl"><div class="pnl-top"><span>Ahora</span><span class="vivo"><i></i>En vivo</span></div>
+    <div class="tj"><span class="av">LG</span><div class="n"><b>Lucas Gil</b><small>Abrió el local · Entrada</small></div><span class="h">08:41</span></div>
+    <div class="tj p"><span class="av">MV</span><div class="n"><b>Mica Vera</b><small>En pausa · Almuerzo</small></div><span class="h">00:18:04</span></div></div>`;
+  if (v === 'rechazo') return `<div class="pnl"><div class="pnl-top"><span>Intentos rechazados</span></div>
+    <div class="tj r"><span class="av">LG</span><div class="n"><b>Lucas Gil</b><small>Fuera del local · 08:02</small></div><span class="h">a 1,4 km</span></div>
+    <div class="tj"><span class="av">LG</span><div class="n"><b>Lucas Gil</b><small>Ingresó desde el local</small></div><span class="h">08:41</span></div></div>`;
+  if (v === 'horas') return `<div class="pnl"><div class="pnl-top"><span>Horas del mes</span></div>
+    <table class="tabla"><tr><td>Nico Paz</td><td>162 h 30 m</td></tr><tr><td>Agus Ríos</td><td>148 h 05 m</td></tr><tr><td>Fran Soto</td><td>96 h 40 m</td></tr></table>
+    <div class="xls">${ic('tabla')} Exportar a Excel</div></div>`;
+  return `<div class="pnl"><div class="pnl-top"><span>Ahora</span><span class="vivo"><i></i>En vivo</span></div>
+    <div class="tj"><span class="av">JP</span><div class="n"><b>Juan Pérez</b><small>Cocina · ingresó 09:02</small></div><span class="h">03:07:12</span></div>
+    <div class="tj p"><span class="av">AG</span><div class="n"><b>Ana Gómez</b><small>Almuerzo · desde 12:40</small></div><span class="h">00:21:30</span></div>
+    <div class="tj"><span class="av">LM</span><div class="n"><b>Leo Martínez</b><small>Barra · ingresó 10:15</small></div><span class="h">01:54:47</span></div></div>`;
+}
+
+/** Dibuja una slide. meta: { formato:'post'|'story', i, total } */
+window.render = (sl, meta) => {
+  const s = document.getElementById('s');
+  const story = meta.formato === 'story';
+  const tono = sl.tipo === 'cta' ? 'violeta' : sl.claro || ['solucion', 'pasos'].includes(sl.tipo) ? 'claro' : '';
+  s.className = `${story ? 'story' : ''} ${tono}`;
+  const cab = `<div class="cab"><div class="marca">${LOGO}Fichito</div>${!story && meta.total > 1 ? `<span class="cnt">${meta.i + 1}/${meta.total}</span>` : ''}</div>`;
+  const pie = story ? '' : sl.tipo === 'portada' ? `<div class="pie"><span>@fichito.app</span><span class="flecha">Deslizá ${ic('flecha')}</span></div>` : '';
+  let c = '';
+  switch (sl.tipo) {
+    case 'portada':
+      c = `<div class="cuerpo">${sl.tag ? `<span class="tag">${esc(sl.tag)}</span>` : ''}<h1>${esc(sl.titulo)}</h1>${sl.sub ? `<p class="sub">${esc(sl.sub)}</p>` : ''}</div><div class="robot-gr">${robot(sl.robot)}</div>`;
+      break;
+    case 'dolor':
+      c = `<div class="cuerpo" style="justify-content:center">${sl.num ? `<span class="num">${sl.num}</span>` : ''}<h2 style="font-size:92px">${esc(sl.titulo)}</h2><p class="txt dolor-txt">${esc(sl.texto)}</p></div>${sl.robot ? `<div class="robot-gr" style="width:300px;height:300px">${robot(sl.robot)}</div>` : ''}`;
+      break;
+    case 'solucion':
+      c = `<div class="cuerpo"><h2>${esc(sl.titulo)}</h2><ul class="lista" style="max-width:${sl.captura ? '540px' : 'none'}">${sl.puntos.map((p) => `<li><span class="ck">${ic('check', 3)}</span>${esc(p)}</li>`).join('')}</ul></div>${sl.captura ? `<div class="tel"><img src="capturas/${sl.captura}"></div>` : ''}`;
+      break;
+    case 'pasos':
+      c = `<div class="cuerpo"><h2>${esc(sl.titulo)}</h2><ol class="pasos">${sl.pasos.map((p, i) => `<li><b>${i + 1}</b>${esc(p)}</li>`).join('')}</ol></div>${sl.captura ? `<div class="tel"><img src="capturas/${sl.captura}"></div>` : ''}`;
+      break;
+    case 'controles':
+      c = `<div class="cuerpo"><h2>${esc(sl.titulo)}</h2><div class="ctrl">${sl.items.map(([i, t, d]) => `<div><span class="ic">${ic(i)}</span><p><b>${esc(t)}</b><span>${esc(d)}</span></p></div>`).join('')}</div></div>`;
+      break;
+    case 'panel':
+      c = `<div class="cuerpo"><h2 style="font-size:72px">${esc(sl.titulo)}</h2>${sl.texto ? `<p class="txt" style="font-size:36px">${esc(sl.texto)}</p>` : ''}${panel(sl.variante)}</div>`;
+      break;
+    case 'rubros':
+      c = `<div class="cuerpo"><h2>${esc(sl.titulo)}</h2><div class="rub">${sl.items.map(([t, d]) => `<div><b>${esc(t)}</b><span>${esc(d)}</span></div>`).join('')}</div></div>`;
+      break;
+    case 'numero':
+      c = `<div class="cuerpo" style="justify-content:center"><div class="grande">${esc(sl.grande)}</div><h2 style="margin-top:20px">${esc(sl.titulo)}</h2><p class="txt">${esc(sl.texto)}</p></div>`;
+      break;
+    case 'cta':
+      c = `<div class="cuerpo" style="justify-content:center"><h1 style="font-size:104px">${esc(sl.titulo)}</h1><p class="txt">${esc(sl.texto)}</p><span class="btn">${esc(sl.boton)}</span></div><div class="robot-gr" style="width:340px;height:340px">${robot('saludo')}</div>`;
+      break;
+    case 'historia': {
+      const tonoH = sl.captura || sl.panel ? '' : sl.robot === 'saludo' || sl.espacio ? 'violeta' : '';
+      s.className = `story ${tonoH}`;
+      c = `<div class="cuerpo"><h1>${esc(sl.titulo)}</h1>${sl.texto ? `<p class="txt">${esc(sl.texto)}</p>` : ''}
+        ${sl.espacio ? '<div class="espacio"></div>' : ''}
+        ${sl.captura ? `<div class="tel"><img src="capturas/${sl.captura}"></div>` : ''}${sl.panel ? panel(sl.panel) : ''}</div>
+        ${sl.robot && !sl.captura && !sl.panel ? `<div class="robot-gr" style="${sl.espacio ? 'width:300px;height:300px;bottom:150px' : ''}">${robot(sl.robot)}</div>` : ''}
+        <div class="pie" style="bottom:90px;justify-content:center;opacity:.6">@fichito.app</div>`;
+      break;
+    }
+  }
+  s.innerHTML = cab + c + pie;
+};
+</script>
+</body>
+</html>

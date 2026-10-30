@@ -1,0 +1,33 @@
+{
+  "nombre": "Fichito",
+  "palabraClave": "FICHITO",
+  "color": "#5B3DF5",
+  "colorOscuro": "#3F27C9",
+  "queEs": "App web de fichaje (control horario) para comercios con empleados por turnos. Cada empleado ficha con su propio celular: escanea el QR del local, toca el botón y pone su NIP de 4 números. El sistema valida que esté adentro del local (ubicación) y que sea su celular. El dueño ve en vivo quién trabaja, quién está en pausa y las horas netas listas para liquidar (exporta a Excel).",
+  "publico": "Dueños y encargados de comercios argentinos con 3 a 30 empleados por turnos: gastronomía, kioscos, almacenes, peluquerías, barberías, gimnasios, farmacias, cadenas chicas con varias sucursales.",
+  "dolores": [
+    "Alguien firma por otro en la planilla de papel",
+    "No sabés a qué hora se abrió el local",
+    "A fin de mes llegan los reclamos de horas y no hay cómo comprobar",
+    "Reloj de huella que no lee con manos mojadas, con harina o con guantes",
+    "Turnos nocturnos que terminan pasada la medianoche y se suman mal",
+    "Varias sucursales sin forma de verlas juntas"
+  ],
+  "diferenciales": [
+    "Sin instalar nada: funciona en el navegador del celular",
+    "Sin reloj, sin huellas, sin cables",
+    "QR del local que se puede cambiar si le sacan foto",
+    "Desde la casa no ficha (radio de ubicación del local)",
+    "Cada celular queda atado a una persona + NIP",
+    "Lo dejás andando en 10 minutos",
+    "Prueba gratis de 7 días"
+  ],
+  "prohibido": [
+    "Emojis (en video, posts, stories y textos)",
+    "Mostrar precios o planes en el contenido de Instagram (por ahora)",
+    "Confeti, partículas de colores o efectos infantiles",
+    "Prometer cosas que la app no hace (no hay reconocimiento facial, no hay huella)"
+  ],
+  "mascota": "Robot de Fichito (logo.svg): cuerpo violeta redondeado, cara blanca, ojos ovalados y sonrisa. Tiene que estar presente en todas las piezas.",
+  "cierre": "Comentá FICHITO y te paso toda la info / cómo probarlo gratis"
+}

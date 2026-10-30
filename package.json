@@ -1,0 +1,16 @@
+{
+  "name": "kit-reels",
+  "private": true,
+  "type": "module",
+  "description": "Kit para hacer reels 9:16 estilo explicador tech oscuro 3D con voz neural, karaoke y efectos sutiles, y piezas de Instagram.",
+  "scripts": {
+    "armar": "node motor/armar.mjs",
+    "cuadros": "node motor/cuadros.mjs",
+    "render": "node motor/render.mjs",
+    "revisar": "node motor/revisar.mjs",
+    "contenido": "node contenido/render.mjs"
+  },
+  "dependencies": {
+    "puppeteer-core": "23.11.1"
+  }
+}

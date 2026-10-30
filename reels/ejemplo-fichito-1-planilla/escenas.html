@@ -1,0 +1,51 @@
+        <div class="vista" id="v-planilla" style="padding:36px">
+          <div class="hoja" style="position:relative">
+            <h3>Planilla de asistencia <span>jue 22/10</span></h3>
+            <div class="fila"><span>Ana Gómez</span><span class="h">08:58</span><span class="firma" data-f="Ana G." data-t="0.15">Ana G.</span></div>
+            <div class="fila"><span>Juan Pérez</span><span class="h">09:01</span><span class="firma" data-f="J. Pérez" data-t="0.32">J. Pérez</span></div>
+            <div class="fila"><span>Martín Ruiz</span><span class="h">09:00</span><span class="firma" id="firma-trampa" data-f="M. Ruiz">M. Ruiz</span></div>
+            <div class="fila" style="border:0"><span>Sofía Díaz</span><span class="h">09:04</span><span class="firma" data-f="Sofi" data-t="0.49">Sofi</span></div>
+            <div class="circulo" id="circulo" style="left:470px;top:300px;width:330px;height:140px"></div>
+            <div class="nota-roja" id="nota-roja" style="left:420px;top:470px">llegó 10:00</div>
+          </div>
+        </div>
+        <div class="vista" id="v-reclamos" style="padding:40px;display:flex;flex-direction:column">
+          <div class="chat" id="chat">
+            <div class="bur izq"><small>Juan · 08:52</small>¿Me firmás la entrada? Llego 9:40</div>
+            <div class="bur izq"><small>Sofía · 08:53</small>Dale, ya te firmé</div>
+            <div class="sep">30 de octubre</div>
+            <div class="bur izq"><small>Martín</small>Ese martes me quedé hasta las 23</div>
+            <div class="bur der"><small>Vos</small>En la planilla dice 21:00…</div>
+            <div class="bur izq"><small>Martín</small>¡Firmé antes de irme!</div>
+          </div>
+        </div>
+        <div class="vista" id="v-validacion" style="padding:36px">
+          <div class="check"><span class="ic" data-ic="qr"></span><div><b>QR firmado del local</b><span>punto: Cocina</span></div><span class="ok" data-ic="check"></span></div>
+          <div class="check"><span class="ic" data-ic="pin"></span><div><b>Está adentro</b><span>a 29 m · radio 80 m</span></div><span class="ok" data-ic="check"></span></div>
+          <div class="check"><span class="ic" data-ic="celular"></span><div><b>Su celular + su NIP</b><span>Android · vinculado</span></div><span class="ok" data-ic="check"></span></div>
+          <div class="check mal" id="rechazo"><span class="ic" data-ic="casa"></span><div><b>Martín, desde su casa</b><span>a 1,4 km · rechazado</span></div><span class="ok" data-ic="cruz"></span></div>
+          <div class="mapa" id="mapa"><div class="rad"><span class="pin" style="left:52%;top:46%;background:#16A34A"></span><span class="pin" id="pin-casa" style="left:96%;top:12%;background:#E5484D"></span></div>
+            <p><span style="color:#7CF0A6">● adentro: ficha</span><br><span style="color:#FF8A8F" id="leyenda-casa">● afuera: no ficha</span><br>radio del local: 80 m</p></div>
+        </div>
+        <div class="vista" id="v-panel" style="padding:36px">
+          <div class="kpis"><div class="kpi"><b style="color:#3DDC84">4</b><span>trabajando</span></div><div class="kpi"><b style="color:#FFB020">1</b><span>en pausa</span></div><div class="kpi"><b>27h</b><span>netas hoy</span></div></div>
+          <div class="tj"><span class="av">JP</span><div class="n"><b>Juan Pérez</b><small>Cocina · 09:02</small></div><span class="r" data-base="11220">03:07:00</span></div>
+          <div class="tj p"><span class="av">AG</span><div class="n"><b>Ana Gómez</b><small>Almuerzo · 12:40</small></div><span class="r" data-base="1260">00:21:00</span></div>
+          <div class="tj"><span class="av">LM</span><div class="n"><b>Leo Martínez</b><small>Barra · 10:15</small></div><span class="r" data-base="6840">01:54:00</span></div>
+          <div class="excel" id="excel"><span data-ic="tabla"></span> Exportar horas a Excel <span style="margin-left:auto" data-ic="check"></span></div>
+        </div>
+        <div class="vista" id="v-cierre">
+          <div class="logo-cierre">
+            {{LOGO}}
+            <div class="comenta-t" id="c-titulo">Comentá</div>
+            <!-- Caja de comentario estilo Instagram -->
+            <div class="ig" id="c-ig">
+              <span class="ig-av"></span>
+              <span class="ig-in"><b id="c-texto"></b><i id="c-cursor"></i><span class="ig-ph" id="c-ph">Agregá un comentario…</span></span>
+              <span class="ig-env" id="c-env">Publicar</span>
+            </div>
+            <div class="ig-ok" id="c-ok"><span class="ig-av chico"></span><b>vos</b> {{PALABRA}} <span class="corazon" id="c-cor"><span data-ic="corazon"></span> <span id="c-cnt">1</span></span></div>
+            <div class="comenta-s" id="c-info">y te paso toda la info</div>
+            <div class="btn-cta" id="c-btn">Empezá gratis hoy</div>
+          </div>
+        </div>

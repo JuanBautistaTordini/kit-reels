@@ -1,0 +1,10 @@
+node_modules/
+reels/*/reel.html
+reels/*/cuadros/
+reels/*/salida/audio-temp.m4a
+contenido/*/png/
+.env
+.env.local
+__pycache__/
+.tts/
+reels/*/salida/*-9x16*.mp4
